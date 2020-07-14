@@ -1,0 +1,133 @@
+% These are the instructions for authors for IJCAI-20.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+% The file ijcai20.sty is NOT the same than previous years'
+\usepackage{ijcai20}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\urlstyle{same}
+
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+
+\title{Predicate invention and reuse}
+
+\author{
+Andrei Diaconu $^1$
+\and
+Andrew Cropper$^1$\and
+Rolf Morel $^1$
+\affiliations
+$^1$University of Oxford\\
+\emails
+\{emails\}@ox.ac.uk}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\begin{abstract}
+Abstract here.
+\end{abstract}
+
+
+
+
+\section{Introduction}
+Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis or example based learning - is a field that lies at the intersection of several computer science topics (machine learning, artificial intelligence, algorithm design) and is a form of automatic programming. IP tries to find a target program starting with an incomplete specification which it tries to generalize. Usually, that incomplete specification is represented by examples, so we can informally define inductive programming to be the process of creating programs from examples using a limited amount of background information. Inductive logic programming (ILP) represents IP in the context of logic programming, the target language usually being Prolog. For example, a problem commonly solved by ILP system is planning the route of a robot in a maze. As suggested by Russel (...). In this paper we focus on two techniques, namely predicate invention and reuse, and investigate their. While the effectiveness of predicate invention has been documented, to the best of our knowledge there is no work that empirically demonstrates that predicate reuse is useful, nor any work discussing when it may be useful. 
+
+
+\par *** Talk about how reuse is not vital, but it has a good chance at improving the learning time.
+
+\par The paper is organized as follows. Section 2 describes the theoretical framework for ILP, and introduces the concept of predicate invention and reuse. Section 3 presents a few ILP systems, some of which support invention and reuse, some of which don't. We also discuss the limitations of the systems that do not support predicate reuse. Section 4 presents a wide range of experiments we have conducted, which highlight the benefits of using predicate invention in conjunction with predicate reuse. Section 5 discusses related work. Finally, section 6 presents conclusions and explores further work.
+
+
+
+\section{Framework}
+\subsection{The ILP problem}
+We have informally defined what ILP tries to solve. We now formally define the problem.
+
+\begin{defn}[Background knowledge]
+Background knowledge (BK) represents the information used by the synthesis process, which completely determines the forms of the clauses in the synthesized programs.
+\end{defn}
+The required BK is specific to the ILP system considered, and we will see different forms of BK in section 3, where we will
+
+\begin{defn}[Examples]
+Examples are user provided input-output pairs that describe the aim of the induced program. We shall consider two types of examples:
+\begin{itemize}
+\item \textit{Positive examples}: those specify what an induced program should produce.
+\item \textit{Negative examples}: those specify what an induced program should \emph{not} produce.
+\end{itemize}
+\end{defn}
+For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples.
+
+\begin{example}[Examples]
+Given the positive examples $[3,2,1] \mapsto^+ [1,2,3]$ and $[5,4] \mapsto^+ [4,5]$, and the negative examples $[1,3,2] \mapsto^- [2,3,1]$ and $[5,4] \mapsto^- [5,4]$, then the program we want to induce is likely to be a list sorting program. Note that if we only consider the positive examples, another possible program would be a list reversal, but the negative example $[1,3,2] \mapsto^- [2,3,1]$ removes this possibility.
+\end{example}
+
+\begin{defn}[\textbf{The ILP problem}]
+Given 
+\end{defn}
+
+\subsection{Predicate invention}
+\begin{example}[Invention]
+
+\end{example}
+ 
+\subsection{Predicate reuse}
+The concept of predicate reuse is tied to predicate invention: the former can't exist without the latter. Through reuse we can exploit the advantage of being able to invent predicates. Formally:
+
+\begin{defn}[Reuse]
+In a system that supports predicate invention, we define predicate reuse to be the ability to means that once a new clause has been invented, it can subsequently be used in the bodies of other clauses.
+\end{defn}
+
+
+
+\section{Invention and reuse in existing ILP systems}
+\subsection{Metagol}
+\subsection{ILASP}
+\subsection{Aleph}
+\subsection{Popper}
+
+
+
+\section{Experiments}
+\subsection{Problems where reuse helps}
+\subsection{Problems where reuse does not help}
+
+
+
+\section{Related work}
+
+
+
+\section{Conclusions and further work}
+
+
+
+
+
+
+\bibliographystyle{named}
+\bibliography{paper}
+\end{document}
+
