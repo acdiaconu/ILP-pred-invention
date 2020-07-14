@@ -1,0 +1,10 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Gulwani \bgroup \em et al.\egroup
+  }{2015}]{indprogmeets}
+Sumit Gulwani, Jos{\'{e}} Hern{\'{a}}ndez{-}Orallo, Emanuel Kitzelmann,
+  Stephen~H. Muggleton, Ute Schmid, and Benjamin~G. Zorn.
+\newblock Inductive programming meets the real world.
+\newblock {\em Commun. {ACM}}, 58(11):90--99, 2015.
+
+\end{thebibliography}

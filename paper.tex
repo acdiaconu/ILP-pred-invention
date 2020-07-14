@@ -1,0 +1,82 @@
+\typeout{IJCAI--PRICAI--20 Instructions for Authors}
+
+% These are the instructions for authors for IJCAI-20.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+% The file ijcai20.sty is NOT the same than previous years'
+\usepackage{ijcai20}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\urlstyle{same}
+
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+
+\title{Predicate invention and reuse}
+
+\author{
+Andrei Diaconu $^1$
+\and
+Andrew Cropper$^1$\and
+Rolf Morel $^1$
+\affiliations
+$^1$University of Oxford\\
+\emails
+\{emails\}@ox.ac.uk}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\begin{abstract}
+Abstract here.
+\end{abstract}
+
+\section{Introduction}
+Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis or example based learning - is a field that lies at the intersection of several computer science topics (machine learning, artificial intelligence, algorithm design) and is a form of automatic programming. IP tries to find a target program starting with an incomplete specification which it tries to generalize. Usually, that incomplete specification is represented by examples, so we can informally define inductive programming to be the process of creating programs from examples using a limited amount of background information - which we shall refer to as program synthesis. Inductive logic programming (ILP) represents IP in the context of logic programming, using some sort of declarative logic programming language such as Prolog. 
+
+\section{Framework}
+\subsection{The ILP problem}
+\subsection{Invention}
+\subsection{Reuse}
+
+\section{Invention and reuse in existing ILP systems}
+\subsection{Metagol}
+\subsection{ILASP}
+\subsection{Aleph}
+\subsection{Popper}
+
+\section{Experiments}
+\subsection{Problems where reuse helps}
+\subsection{Problems where reuse does not help}
+
+\section{Related work}
+
+\section{Conclusions and further work}
+
+
+
+
+
+
+\bibliographystyle{named}
+\bibliography{paper}
+\end{document}
+
