@@ -7,4 +7,12 @@ Sumit Gulwani, Jos{\'{e}} Hern{\'{a}}ndez{-}Orallo, Emanuel Kitzelmann,
 \newblock Inductive programming meets the real world.
 \newblock {\em Commun. {ACM}}, 58(11):90--99, 2015.
 
+\bibitem[\protect\citeauthoryear{Inoue \bgroup \em et al.\egroup
+  }{2016}]{ILPChallenges}
+Katsumi Inoue, Hayato Ohwada, and Akihiro Yamamoto.
+\newblock Inductive logic programming: Challenges.
+\newblock In Dale Schuurmans and Michael~P. Wellman, editors, {\em Proceedings
+  of the Thirtieth {AAAI} Conference on Artificial Intelligence, February
+  12-17, 2016, Phoenix, Arizona, {USA}}, pages 4330--4332. {AAAI} Press, 2016.
+
 \end{thebibliography}
