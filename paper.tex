@@ -21,6 +21,16 @@
 \usepackage{algorithmic}
 \urlstyle{same}
 
+
+\usepackage[]{xcolor}
+\newcommand{\ac}[1]{\textcolor{red}{AC: #1}}
+\newcommand{\ad}[1]{\textcolor{blue}{AD: #1}}
+\newcommand{\rolf}[1]{\textcolor{brown}{\textbf{RM:} #1}}
+\newcommand{\rolfsout}[2]{{\color{brown} \sout{#1}}} % second argument is documentation for why the strikeout
+\newcommand{\rolfreplace}[3]{{\color{brown} \sout{#1}#2}} % third argument is documentation for why the replacement
+
+
+
 \newtheorem{example}{Example}
 \newtheorem{theorem}{Theorem}
 \theoremstyle{definition}
@@ -67,9 +77,9 @@ Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis
 We have informally defined what ILP tries to solve. We now formally define the problem.
 
 \begin{defn}[Background knowledge]
-Background knowledge (BK) represents the information used by the synthesis process, which completely determines the forms of the clauses in the synthesized programs.
+Background knowledge (BK) represents the information used to induce the programs. It completely determines the forms (grammar) of the clauses in the synthesized programs.
 \end{defn}
-The required BK is specific to the ILP system considered, and we will see different forms of BK in section 3, where we will
+The required BK is specific to each ILP system, and we will explore different forms of BK in section 3, where explore in more detail existing systems.
 
 \begin{defn}[Examples]
 Examples are user provided input-output pairs that describe the aim of the induced program. We shall consider two types of examples:
@@ -78,26 +88,32 @@ Examples are user provided input-output pairs that describe the aim of the induc
 \item \textit{Negative examples}: those specify what an induced program should \emph{not} produce.
 \end{itemize}
 \end{defn}
-For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples.
+For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples. We say that a target hypothesis \emph{satisfies} if the required output is produced for the positive examples, and the output is \emph{not} produced for the negative examples.
 
 \begin{example}[Examples]
 Given the positive examples $[3,2,1] \mapsto^+ [1,2,3]$ and $[5,4] \mapsto^+ [4,5]$, and the negative examples $[1,3,2] \mapsto^- [2,3,1]$ and $[5,4] \mapsto^- [5,4]$, then the program we want to induce is likely to be a list sorting program. Note that if we only consider the positive examples, another possible program would be a list reversal, but the negative example $[1,3,2] \mapsto^- [2,3,1]$ removes this possibility.
 \end{example}
 
 \begin{defn}[\textbf{The ILP problem}]
-Given 
+Given background knowledge $BK$, positive examples $\mapsto^+$, negative examples $\mapsto^-$, the \emph{ILP problem} is to find a hypothesis $\mathcal{H}$ that conforms with $BK$ (its grammar) and that satisfies the positive and negative examples.  
 \end{defn}
 
 \subsection{Predicate invention}
-\begin{example}[Invention]
+Predicate invention has been a hot topic from the early days of ILP, as noted in the review \textit{ILP turns 20} \cite{ilpturns20}. Much of the early literature focused on it, but the interest still persists today. The appeal of invention is that it compensates for incomplete BK and hence expands the language of the ILP systems that employ it. Example 2 shows how invention can be used.
 
+\begin{example}[Invention]
 \end{example}
+
+We now formally define invention.
+\begin{defn}[Invention]
+We define predicate invention to be the automated discovery of predicates that are not part of the provided BK.
+\end{defn}
  
 \subsection{Predicate reuse}
-The concept of predicate reuse is tied to predicate invention: the former can't exist without the latter. Through reuse we can exploit the advantage of being able to invent predicates. Formally:
+The concept of predicate reuse is tied to predicate invention: the former can't exist without the latter. Through reuse we can exploit the advantage of being able to invent predicates. This technique has not been as popular as invention (\ad{should I add some references to papers that don't specifically talk about reuse but use it?}), though, as we will see in section 4, it can have a sizable impact on the learning time. Formally:
 
 \begin{defn}[Reuse]
-In a system that supports predicate invention, we define predicate reuse to be the ability to means that once a new clause has been invented, it can subsequently be used in the bodies of other clauses.
+In a system that supports predicate invention, we define predicate reuse to be the ability to subsequently use a predicate in the bodies of other predicates, once that predicate has been invented.
 \end{defn}
 
 
