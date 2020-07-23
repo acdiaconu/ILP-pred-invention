@@ -63,12 +63,11 @@ Abstract here.
 
 
 \section{Introduction}
-Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis or example based learning - is a field that lies at the intersection of several computer science topics (machine learning, artificial intelligence, algorithm design) and is a form of automatic programming. IP tries to find a target program starting with an incomplete specification which it tries to generalize. Usually, that incomplete specification is represented by examples, so we can informally define inductive programming to be the process of creating programs from examples using a limited amount of background information. Inductive logic programming (ILP) represents IP in the context of logic programming, the target language usually being Prolog. For example, a problem commonly solved by ILP system is planning the route of a robot in a maze. As suggested by Russel (...). In this paper we focus on two techniques, namely predicate invention and reuse, and investigate their. While the effectiveness of predicate invention has been documented, to the best of our knowledge there is no work that empirically demonstrates that predicate reuse is useful, nor any work discussing when it may be useful. 
+Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis or example based learning - is a field that lies at the intersection of several computer science topics (machine learning, artificial intelligence, algorithm design) and is a form of automatic programming. IP tries to find a target program starting with an incomplete specification, which it tries to generalize into a program. Usually, that incomplete specification is represented by examples, so we can informally define inductive programming to be the process of creating programs from examples using a limited amount of background information. Inductive logic programming (ILP) represents IP in the context of logic programming, the target language usually being Prolog. For example, a problem commonly solved by ILP system is planning the route of a robot in a maze. 
 
+\par Even in the early days of ILP, the idea of predicate invention (or discovery) has been thoroughly investigated, as a means to compensate for lack of knowledge. As noted by Russell \cite{humancompatible}, ``... this capability [discovery] is the most important step needed to reach human-level AI." Even though the idea of invention has been quite popular (and still is), an adjacent concept, which we shall call \emph{predicate reuse}, has not been given much attention. Informally, reuse is the ability of an ILP system to subsequently use a predicate, once that predicate has been invented. While the effectiveness of predicate invention has been documented, to the best of our knowledge there is no work that empirically demonstrates that predicate reuse is useful, nor any work discussing when it may be useful. 
 
-\par *** Talk about how reuse is not vital, but it has a good chance at improving the learning time.
-
-\par The paper is organized as follows. Section 2 describes the theoretical framework for ILP, and introduces the concept of predicate invention and reuse. Section 3 presents a few ILP systems, some of which support invention and reuse, some of which don't. We also discuss the limitations of the systems that do not support predicate reuse. Section 4 presents a wide range of experiments we have conducted, which highlight the benefits of using predicate invention in conjunction with predicate reuse. Section 5 discusses related work. Finally, section 6 presents conclusions and explores further work.
+\par The paper is organized as follows. Section 2 describes the theoretical framework for ILP, and introduces the concept of predicate invention and reuse. Section 3 presents a few ILP systems, some of which support invention and reuse, some of which don't. We also discuss why the systems that are incapable of reusing predicates are unable to do so. Section 4 presents a wide range of experiments we have conducted, which highlight the benefits of using predicate invention in conjunction with predicate reuse. Section 5 discusses related work. Finally, section 6 presents conclusions and explores further work.
 
 
 
@@ -77,9 +76,9 @@ Inductive programming (IP) \cite{indprogmeets} - also known as program synthesis
 We have informally defined what ILP tries to solve. We now formally define the problem.
 
 \begin{defn}[Background knowledge]
-Background knowledge (BK) represents the information used to induce the programs. It completely determines the forms (grammar) of the clauses in the synthesized programs.
+Background knowledge (BK) represents the information used to induce the programs,  which completely determines the language of the synthesized programs.
 \end{defn}
-The required BK is specific to each ILP system, and we will explore different forms of BK in section 3, where explore in more detail existing systems.
+The required BK is specific to each ILP system, and we will explore different forms of BK in section 3, where we explore in more detail existing systems. Generally, the BK will contain predicates that can be used in the bodies of the synthesized functions (written prior to the synthesis process) or templates that describe the forms of the allowed predicates. 
 
 \begin{defn}[Examples]
 Examples are user provided input-output pairs that describe the aim of the induced program. We shall consider two types of examples:
@@ -88,47 +87,67 @@ Examples are user provided input-output pairs that describe the aim of the induc
 \item \textit{Negative examples}: those specify what an induced program should \emph{not} produce.
 \end{itemize}
 \end{defn}
-For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples. We say that a target hypothesis \emph{satisfies} if the required output is produced for the positive examples, and the output is \emph{not} produced for the negative examples.
+For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples. We say that a target hypothesis \emph{satisfies} the examples if the specified output is produced for the positive examples, and the specified output is \emph{not} produced for the negative examples.
 
 \begin{example}[Examples]
 Given the positive examples $[3,2,1] \mapsto^+ [1,2,3]$ and $[5,4] \mapsto^+ [4,5]$, and the negative examples $[1,3,2] \mapsto^- [2,3,1]$ and $[5,4] \mapsto^- [5,4]$, then the program we want to induce is likely to be a list sorting program. Note that if we only consider the positive examples, another possible program would be a list reversal, but the negative example $[1,3,2] \mapsto^- [2,3,1]$ removes this possibility.
 \end{example}
 
 \begin{defn}[\textbf{The ILP problem}]
-Given background knowledge $BK$, positive examples $\mapsto^+$, negative examples $\mapsto^-$, the \emph{ILP problem} is to find a hypothesis $\mathcal{H}$ that conforms with $BK$ (its grammar) and that satisfies the positive and negative examples.  
+Given background knowledge $BK$, positive examples $\mapsto^+$ and negative examples $\mapsto^-$, the \emph{ILP problem} is to find a hypothesis $\mathcal{H}$ that is part of the language described by $BK$, and that satisfies the positive and negative examples.  
 \end{defn}
 
 \subsection{Predicate invention}
-Predicate invention has been a hot topic from the early days of ILP, as noted in the review \textit{ILP turns 20} \cite{ilpturns20}. Much of the early literature focused on it, but the interest still persists today. The appeal of invention is that it compensates for incomplete BK and hence expands the language of the ILP systems that employ it. Example 2 shows how invention can be used.
+Predicate invention has been a hot topic from the early days of ILP, as noted in the review \textit{ILP turns 20} \cite{ilpturns20}. Much of the early literature focused on it, but the interest still persists today. The appeal of invention is that it compensates for incomplete BK and hence automatically expands the language of the ILP systems that employ it. Example 2 shows how invention can be used to create new predicates.
 
 \begin{example}[Invention]
+
 \end{example}
 
 We now formally define invention.
 \begin{defn}[Invention]
-We define predicate invention to be the automated discovery of predicates that are not part of the provided BK.
+We define predicate invention to be the automated discovery of predicates that are not part of the provided BK and that can be used as part of the synthesis process.
 \end{defn}
  
 \subsection{Predicate reuse}
-The concept of predicate reuse is tied to predicate invention: the former can't exist without the latter. Through reuse we can exploit the advantage of being able to invent predicates. This technique has not been as popular as invention (\ad{should I add some references to papers that don't specifically talk about reuse but use it?}), though, as we will see in section 4, it can have a sizable impact on the learning time. Formally:
+The concept of predicate reuse is tied to predicate invention: the former can not exist without the latter.
 
 \begin{defn}[Reuse]
 In a system that supports predicate invention, we define predicate reuse to be the ability to subsequently use a predicate in the bodies of other predicates, once that predicate has been invented.
 \end{defn}
 
+Through reuse, we can exploit the advantage of being able to invent predicates. This technique has not been as popular as invention (\ad{should I add some references to papers that don't specifically talk about reuse but use it?}), though, as we will see in section 4, it can have a sizable impact on the learning time, as well as on the size of the induced program. An example of reusing already invented predicates can be seen in example ***. Formally:
+
+
 
 
 \section{Invention and reuse in existing ILP systems}
+As mentioned, invention is not a new concept in ILP. A range of systems implement it (to a greater or lesser extent), and some are even capable of reuse. We will investigate four modern ILP systems, all of which are capable of invention. However, out of those only one is capable of general reuse, and one, the other being unable to exploit the technique (and we shall look into why this is not the case). 
+
 \subsection{Metagol}
+\emph{Metagol} and \emph{Metagol$_{ho}$} \cite{metagolho} are two ILP systems that use the idea of \emph{meta-interpretive learning} (MIL) \cite{invabs2016}. We will only talk about \emph{Metagol$_{ho}$}, since this is the more expressive of the two. The BK used by \emph{Metagol$_{ho}$} is divided in three categories:
+\begin{itemize}
+\item compiled background knowledge (CBK): those are ``normal" first order Prolog predicates, that are deductively proven by the Prolog interpreter (in the usual way).
+\item interpreted background knowledge (IBK): this is represented by higher-order predicates, that are proven with the aid of a meta-interpreter (since Prolog does not allow higher-order predicates to be present in the bodies of other predicates); for example, we could describe $map/3$ using the following two clauses:
+\textit{map ([], [], F) :- .} and \textit{map([A $\mid$ As], [B $\mid$ Bs], F]) :- F(A, B), map(As, Bs, F)}.
+\item metarules: those are existentially quantified rules that enforce the form the language of the induced predicates; an example could be \textit{P(a, b) :- Q(a, c), R(c, b)}, where the upper case letters are existentially quantified variables (they will be replaced with CBK or IBK).
+\end{itemize}
+The way the hypothesis search takes place is as follows: try to prove the required atom specified by the positive and negative examples using only the CBK; if that fails, fetch an IBK clause and unify the atom with it and try to prove the body of the matched definition; if this step fails too, fetch a metarule and try to fill in the existentially quantified variables. Another feature of the system is that the system generates new examples: if we select the \textit{map} metarule, based on the existing examples we can infer a set of derived examples that the functional argument of \textit{map} must satisfy. This allows the system to know when a goal is found, as well as prune incorrect candidates early.
+\par Invention is an important part of the search and occurs in both the IBK and the metarule steps described above: instead of using CBK to fill unknown predicates, we can invent new ones. The predicates (or rather the substitutions) are saved in an abduction store, and can be used in the bodies of other predicates. Hence, \emph{Metagol$_{ho}$} supports predicate reuse in a general sense, since there is no restriction on how the invented predicates are subsequently used.
+
 \subsection{ILASP}
+
 \subsection{Aleph}
+
 \subsection{Popper}
 
 
 
 \section{Experiments}
 \subsection{Problems where reuse helps}
+
 \subsection{Problems where reuse does not help}
+
 
 
 
