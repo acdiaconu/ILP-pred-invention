@@ -1,0 +1,28 @@
+% \section{Predicate Invention}
+\section{How Does Predicate Invention Work?}
+As mentioned, invention is not a new concept in ILP. A range of systems implement it (to a greater or lesser extent), and some are even capable of reuse. We will investigate four modern ILP systems, all of which are capable of invention. However, out of those only one is capable of general reuse, and one, the other being unable to exploit the technique (and we shall look into why this is not the case).
+\ac{@SD probably best to talk about the technique rather than the implementation. Check out the ILP intro paper.}
+
+\subsection{Inverse Resolution}
+
+\subsection{Metarules}
+
+\subsection{Placeholders}
+
+
+\subsection{Metagol}
+\emph{Metagol} and \emph{Metagol$_{ho}$} \cite{metagolho} are two ILP systems that use the idea of \emph{meta-interpretive learning} (MIL) \cite{invabs2016}. We will only talk about \emph{Metagol$_{ho}$}, since this is the more expressive of the two. The BK used by \emph{Metagol$_{ho}$} is divided in three categories:
+\begin{itemize}
+\item compiled background knowledge (CBK): those are ``normal" first order Prolog predicates, that are deductively proven by the Prolog interpreter (in the usual way).
+\item interpreted background knowledge (IBK): this is represented by higher-order predicates, that are proven with the aid of a meta-interpreter (since Prolog does not allow higher-order predicates to be present in the bodies of other predicates); for example, we could describe $map/3$ using the following two clauses:
+\textit{map ([], [], F) :- .} and \textit{map([A $\mid$ As], [B $\mid$ Bs], F]) :- F(A, B), map(As, Bs, F)}.
+\item metarules: those are existentially quantified rules that enforce the form the language of the induced predicates; an example could be \textit{P(a, b) :- Q(a, c), R(c, b)}, where the upper case letters are existentially quantified variables (they will be replaced with CBK or IBK).
+\end{itemize}
+The way the hypothesis search takes place is as follows: try to prove the required atom specified by the positive and negative examples using only the CBK; if that fails, fetch an IBK clause and unify the atom with it and try to prove the body of the matched definition; if this step fails too, fetch a metarule and try to fill in the existentially quantified variables. Another feature of the system is that the system generates new examples: if we select the \textit{map} metarule, based on the existing examples we can infer a set of derived examples that the functional argument of \textit{map} must satisfy. This allows the system to know when a goal is found, as well as prune incorrect candidates early.
+\par Invention is an important part of the search and occurs in both the IBK and the metarule steps described above: instead of using CBK to fill unknown predicates, we can invent new ones. The predicates (or rather the substitutions) are saved in an abduction store, and can be used in the bodies of other predicates. Hence, \emph{Metagol$_{ho}$} supports predicate reuse in a general sense, since there is no restriction on how the invented predicates are subsequently used.
+
+\subsection{ILASP}
+
+\subsection{Aleph}
+
+\subsection{Popper}

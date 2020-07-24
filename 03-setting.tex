@@ -1,0 +1,47 @@
+\section{What is Predicate Invention?}
+\subsection{The ILP problem}
+\ac{this section can be a lot more compact. I will do it.}
+We have informally defined what ILP tries to solve. We now formally define the problem.
+
+\begin{defn}[Background knowledge]
+Background knowledge (BK) represents the information used to induce the programs,  which completely determines the language of the synthesized programs.
+\end{defn}
+The required BK is specific to each ILP system, and we will explore different forms of BK in section 3, where we explore in more detail existing systems. Generally, the BK will contain predicates that can be used in the bodies of the synthesized functions (written prior to the synthesis process) or templates that describe the forms of the allowed predicates.
+
+\begin{defn}[Examples]
+Examples are user provided input-output pairs that describe the aim of the induced program. We shall consider two types of examples:
+\begin{itemize}
+\item \textit{Positive examples}: those specify what an induced program should produce.
+\item \textit{Negative examples}: those specify what an induced program should \emph{not} produce.
+\end{itemize}
+\end{defn}
+For the rest of this article we will use the relation $in \mapsto^+ out$ to refer to positive examples, and the relation $in \mapsto^- out$ to refer to negative examples. While the positive examples have a clear role in the inductive process, the negative ones serve a slightly different one: their aim is to remove ambiguity. This is highlighted in example 2.1, which also further elaborates on the notation used for examples. We say that a target hypothesis \emph{satisfies} the examples if the specified output is produced for the positive examples, and the specified output is \emph{not} produced for the negative examples.
+
+\begin{example}[Examples]
+Given the positive examples $[3,2,1] \mapsto^+ [1,2,3]$ and $[5,4] \mapsto^+ [4,5]$, and the negative examples $[1,3,2] \mapsto^- [2,3,1]$ and $[5,4] \mapsto^- [5,4]$, then the program we want to induce is likely to be a list sorting program. Note that if we only consider the positive examples, another possible program would be a list reversal, but the negative example $[1,3,2] \mapsto^- [2,3,1]$ removes this possibility.
+\end{example}
+
+\begin{defn}[\textbf{The ILP problem}]
+Given background knowledge $BK$, positive examples $\mapsto^+$ and negative examples $\mapsto^-$, the \emph{ILP problem} is to find a hypothesis $\mathcal{H}$ that is part of the language described by $BK$, and that satisfies the positive and negative examples.
+\end{defn}
+
+\subsection{Predicate invention}
+Predicate invention has been a hot topic from the early days of ILP, as noted in the review \textit{ILP turns 20} \cite{ilpturns20}. Much of the early literature focused on it, but the interest still persists today. The appeal of invention is that it compensates for incomplete BK and hence automatically expands the language of the ILP systems that employ it. Example 2 shows how invention can be used to create new predicates.
+
+\begin{example}[Invention]
+
+\end{example}
+\ac{@SD talk about useful and necessary predicate invention}
+We now formally define invention.
+\begin{defn}[Invention]
+We define predicate invention to be the automated discovery of predicates that are not part of the provided BK and that can be used as part of the synthesis process.
+\end{defn}
+
+\subsection{Predicate reuse}
+The concept of predicate reuse is tied to predicate invention: the former can not exist without the latter.
+
+\begin{defn}[Reuse]
+In a system that supports predicate invention, we define predicate reuse to be the ability to subsequently use a predicate in the bodies of other predicates, once that predicate has been invented.
+\end{defn}
+
+Through reuse, we can exploit the advantage of being able to invent predicates. This technique has not been as popular as invention (\ad{should I add some references to papers that don't specifically talk about reuse but use it?}), though, as we will see in section 4, it can have a sizable impact on the learning time, as well as on the size of the induced program. An example of reusing already invented predicates can be seen in example ***. Formally:
