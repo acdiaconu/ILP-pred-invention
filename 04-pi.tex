@@ -11,6 +11,14 @@ As mentioned, invention is not a new concept in ILP. A range of systems implemen
 
 
 \subsection{Metagol}
+\rolf{Inclined towards not going into metagol this much/in this way.}
+\rolf{1) Now other systems need to be described at the same level of detail.}
+\rolf{2) Even for people who are familiar with meta-interpreters it is not easy.
+More instructive to describe that it iteratively adds clauses, whose head predicate can be fresh.
+Body predicates come from the BK or use previously invented predicates. 
+Clauses conform to metarules (with a brief definition).
+Metagol backtracks upon detecting inconsistency with the examples.}
+
 \emph{Metagol} and \emph{Metagol$_{ho}$} \cite{metagolho} are two ILP systems that use the idea of \emph{meta-interpretive learning} (MIL) \cite{invabs2016}. We will only talk about \emph{Metagol$_{ho}$}, since this is the more expressive of the two. The BK used by \emph{Metagol$_{ho}$} is divided in three categories:
 \begin{itemize}
 \item compiled background knowledge (CBK): those are ``normal" first order Prolog predicates, that are deductively proven by the Prolog interpreter (in the usual way).
